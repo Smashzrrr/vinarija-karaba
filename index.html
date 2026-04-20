@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vinarija Karaba — Autohtona vina iz Dalmacije</title>
+<meta name="description" content="Vinarija Karaba — obiteljska vinarija iz Dalmacije. Autohtone sorte, ručna berba, francuski barrique. Templar, Plavac, Crljenak i dalmatinska bijela vina." />
+<meta property="og:title" content="Vinarija Karaba — Autohtona vina iz Dalmacije" />
+<meta property="og:description" content="Obiteljska vinarija u srcu Dalmacije. Vina koja nose tišinu kamena i težinu godina." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="hr_HR" />
+<meta name="theme-color" content="#14100C" />
+<link rel="icon" href="assets/logo-icon-cream.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="styles/tokens.css" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--es-cream); color: var(--es-ink); }
+  * { box-sizing: border-box; }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; }
+  a { color: inherit; }
+
+  /* Skip to content – accessibility */
+  .es-skip-link {
+    position: absolute; top: -100px; left: 16px; z-index: 99999;
+    padding: 12px 24px; background: var(--es-ink); color: var(--es-cream-soft);
+    font-family: var(--es-font-ui); font-size: 14px; border-radius: 0 0 12px 12px;
+    text-decoration: none; transition: top 0.2s;
+  }
+  .es-skip-link:focus { top: 0; }
+
+  /* Page transition */
+  .es-page-fade-enter { opacity: 0; transform: translateY(8px); }
+  .es-page-fade-active { opacity: 1; transform: translateY(0); transition: opacity 0.3s ease, transform 0.3s ease; }
+</style>
+</head>
+<body>
+<a href="#main-content" class="es-skip-link">Skip to content</a>
+<div id="root"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="src/data.jsx"></script>
+<script type="text/babel" src="src/atoms.jsx"></script>
+<script type="text/babel" src="src/chrome.jsx"></script>
+<script type="text/babel" src="src/hero.jsx"></script>
+<script type="text/babel" src="src/products.jsx"></script>
+<script type="text/babel" src="src/process.jsx"></script>
+<script type="text/babel" src="src/map.jsx"></script>
+<script type="text/babel" src="src/cart.jsx"></script>
+<script type="text/babel" src="src/sections.jsx"></script>
+<script type="text/babel" src="src/catalog.jsx"></script>
+
+<script type="text/babel">
+const { useContext: useCtxApp, useState: useStApp, useEffect: useEfApp, useRef: useRefApp } = React;
+
+function HomePage() {
+  return (
+    <>
+      <window.Hero />
+      <window.StatBar />
+      <window.About />
+      <window.WineSection />
+      <window.FieldsSection />
+      <window.ProcessSection />
+      <window.VisitSection />
+      <window.NewsSection />
+      <window.AwardsSection />
+      <window.GallerySection />
+      <window.ContactSection />
+    </>
+  );
+}
+
+function Router() {
+  const { page } = useCtxApp(window.PageContext);
+  const [fadeClass, setFadeClass] = useStApp('es-page-fade-active');
+  const prevPage = useRefApp(page);
+
+  useEfApp(() => {
+    if (prevPage.current !== page) {
+      setFadeClass('es-page-fade-enter');
+      const t = setTimeout(() => setFadeClass('es-page-fade-active'), 30);
+      prevPage.current = page;
+      return () => clearTimeout(t);
+    }
+  }, [page]);
+
+  let content;
+  if (page === 'catalog') content = <window.CatalogPage />;
+  else if (page.startsWith('product:')) content = <window.ProductPage id={page.split(':')[1]} />;
+  else content = <HomePage />;
+
+  return <div id="main-content" className={fadeClass}>{content}</div>;
+}
+
+/* -------- TWEAK controls -------- */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "wine",
+  "heroTitleStyle": "serif",
+  "showNoise": false,
+  "tightHero": false
+}/*EDITMODE-END*/;
+
+function TweakProvider({ children }) {
+  const [tweaks, setTweaks] = useStApp(() => {
+    try { return { ...TWEAK_DEFAULTS, ...(JSON.parse(localStorage.getItem('karaba_tweaks') || '{}')) }; }
+    catch(e) { return TWEAK_DEFAULTS; }
+  });
+  const [visible, setVisible] = useStApp(false);
+
+  useEfApp(() => {
+    const onMsg = (e) => {
+      if (!e.data) return;
+      if (e.data.type === '__activate_edit_mode') setVisible(true);
+      if (e.data.type === '__deactivate_edit_mode') setVisible(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  useEfApp(() => {
+    localStorage.setItem('karaba_tweaks', JSON.stringify(tweaks));
+    // Karaba stays on dark-estate palette — tweaks reserved for future.
+  }, [tweaks]);
+
+  const setTweak = (k, v) => setTweaks(prev => {
+    const next = { ...prev, [k]: v };
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*');
+    return next;
+  });
+
+  return (
+    <window.TweakContext.Provider value={{ tweaks, setTweak }}>
+      {children}
+      {visible && <TweakPanel tweaks={tweaks} setTweak={setTweak} onClose={()=>setVisible(false)} />}
+    </window.TweakContext.Provider>
+  );
+}
+
+function TweakPanel({ tweaks, setTweak, onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', right: 20, bottom: 20, zIndex: 99999,
+      width: 280, padding: 20,
+      background: 'var(--es-paper)',
+      border: '1px solid var(--es-border-strong)',
+      borderRadius: 16,
+      boxShadow: 'var(--es-shadow-lift)',
+      fontFamily: 'var(--es-font-ui)',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ fontFamily: 'var(--es-font-mono)', fontSize: 11, letterSpacing: '0.2em', color: 'var(--es-wine)', fontWeight: 700 }}>TWEAKS</div>
+        <button onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--es-muted)', padding: 4 }}>
+          <window.Icon name="x" size={14} />
+        </button>
+      </div>
+
+      <div style={{ marginBottom: 16 }}>
+        <div className="es-caption" style={{ marginBottom: 8 }}>Accent</div>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {[
+            { id: 'wine', color: '#6E2428', label: 'Vino' },
+            { id: 'olive', color: '#5B6B3A', label: 'Maslina' },
+            { id: 'terracotta', color: '#B35933', label: 'Smokva' },
+          ].map(a => (
+            <button key={a.id} onClick={()=>setTweak('accent', a.id)} style={{
+              flex: 1, padding: '8px 4px', fontSize: 11,
+              borderRadius: 8,
+              border: tweaks.accent === a.id ? `2px solid ${a.color}` : '1px solid var(--es-border)',
+              background: tweaks.accent === a.id ? a.color+'22' : 'transparent',
+              color: 'var(--es-ink)', cursor: 'pointer',
+            }}>
+              <div style={{ width: 14, height: 14, borderRadius: 9999, background: a.color, margin: '0 auto 4px' }} />
+              {a.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginBottom: 16 }}>
+        <div className="es-caption" style={{ marginBottom: 8 }}>Hero naslov</div>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {[
+            { id: 'mixed', label: 'Mix' },
+            { id: 'serif', label: 'Serif' },
+            { id: 'script', label: 'Script' },
+          ].map(a => (
+            <button key={a.id} onClick={()=>setTweak('heroTitleStyle', a.id)} style={{
+              flex: 1, padding: '8px', fontSize: 12,
+              borderRadius: 8,
+              border: tweaks.heroTitleStyle === a.id ? '1px solid var(--es-ink)' : '1px solid var(--es-border)',
+              background: tweaks.heroTitleStyle === a.id ? 'var(--es-ink)' : 'transparent',
+              color: tweaks.heroTitleStyle === a.id ? 'var(--es-cream-soft)' : 'var(--es-ink)',
+              cursor: 'pointer', fontFamily: 'inherit',
+            }}>{a.label}</button>
+          ))}
+        </div>
+      </div>
+
+      <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer' }}>
+        <input type="checkbox" checked={tweaks.showNoise} onChange={e=>setTweak('showNoise', e.target.checked)} />
+        <span style={{ fontSize: 13, color: 'var(--es-ink)' }}>Papirnata tekstura</span>
+      </label>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer' }}>
+        <input type="checkbox" checked={tweaks.tightHero} onChange={e=>setTweak('tightHero', e.target.checked)} />
+        <span style={{ fontSize: 13, color: 'var(--es-ink)' }}>Kompaktniji hero</span>
+      </label>
+    </div>
+  );
+}
+
+function App() {
+  // Update lang attribute on <html>
+  const { lang } = useCtxApp(window.LangContext);
+  useEfApp(() => {
+    document.documentElement.lang = lang === 'en' ? 'en' : 'hr';
+  }, [lang]);
+
+  return (
+    <window.PageProvider>
+      <window.CartProvider>
+        <TweakProvider>
+          <window.Navbar />
+          <Router />
+          <window.Footer />
+          <window.CartBadge />
+        </TweakProvider>
+      </window.CartProvider>
+    </window.PageProvider>
+  );
+}
+
+// Wrap with LangProvider at top level
+function Root() {
+  return (
+    <window.LangProvider>
+      <App />
+    </window.LangProvider>
+  );
+}
+
+// Wait for all components to be registered before rendering
+function tryRender() {
+  const required = [
+    'Hero', 'StatBar', 'About', 'WineSection', 'OilSection', 'FigsSection',
+    'FieldsSection', 'ProcessSection', 'VisitSection', 'NewsSection',
+    'AwardsSection', 'GallerySection', 'ContactSection', 'Navbar', 'Footer',
+    'CatalogPage', 'ProductPage', 'CartProvider', 'CartBadge', 'AddToCartBtn',
+    'PageProvider', 'LangProvider', 'LeafletMap',
+    'Reveal', 'Section', 'PlaceholderImage', 'Icon', 'Logo', 'TiltCard', 'CountUp', 'FloatAnim',
+  ];
+  const missing = required.filter(n => !window[n]);
+  if (missing.length > 0) {
+    console.log('[Esencija] Waiting for components:', missing.join(', '));
+    setTimeout(tryRender, 50);
+    return;
+  }
+  console.log('[Esencija] All components loaded, rendering...');
+  ReactDOM.createRoot(document.getElementById('root')).render(<Root />);
+}
+tryRender();
+</script>
+</body>
+</html>

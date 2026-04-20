@@ -1,0 +1,390 @@
+/* ============================================================
+   VINARIJA KARABA — Design tokens
+   Dark estate stil: duboki bordo, ugljen, toplo zlato, krem.
+   Inspirirano: San Felice, Della Vite, Fournier Père & Fils.
+   ============================================================ */
+
+/* --- Fonts ------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@font-face {
+  font-family: 'Bookerly';
+  src: url('../fonts/Bookerly-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Bookerly';
+  src: url('../fonts/Bookerly-Italic.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Bookerly';
+  src: url('../fonts/Bookerly-Bold.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'BookerlyDisplay';
+  src: url('../fonts/BookerlyDisplay_Rg.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'BookerlyDisplay';
+  src: url('../fonts/BookerlyDisplay_It.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+
+:root {
+  /* ---------- Surfaces ---------- */
+  --es-ink:         #14100C;   /* near-black — dark estate base */
+  --es-ink-soft:    #1E1814;   /* slightly lifted charcoal */
+  --es-charcoal:    #2A211A;   /* brown-charcoal surface */
+  --es-cream:       #EFE6CE;   /* warm aged cream — primary light surface */
+  --es-cream-soft:  #F4ECD5;   /* softer cream (paper) */
+  --es-cream-deep:  #E4D9BC;   /* deeper sand */
+  --es-paper:       #F8F1DC;   /* near-white cards */
+  --es-parchment:   #E8DDBE;   /* badges, tags */
+
+  /* ---------- Brand ---------- */
+  --es-wine:        #5C1A1F;   /* deep bordeaux — PRIMARY accent */
+  --es-wine-deep:   #3B0F12;   /* near-black burgundy */
+  --es-wine-light:  #7A2930;
+  --es-wine-wash:   rgba(92, 26, 31, 0.14);
+
+  --es-gold:        #B8985A;   /* warm aged gold — secondary accent */
+  --es-gold-deep:   #8F7340;
+  --es-gold-light:  #D4B77A;
+  --es-gold-wash:   rgba(184, 152, 90, 0.16);
+
+  --es-olive:       #6B6B3A;   /* restrained olive — for rare accents only */
+  --es-olive-deep:  #4A4925;
+
+  /* ---------- Text ---------- */
+  --es-text:        #14100C;
+  --es-text-soft:   #3A2F25;
+  --es-muted:       #6E5F48;
+  --es-muted-light: #8B7C64;
+  --es-on-dark:     #EFE6CE;
+  --es-on-dark-dim: rgba(239, 230, 206, 0.72);
+  --es-on-dark-faint: rgba(239, 230, 206, 0.42);
+
+  /* ---------- Borders ---------- */
+  --es-border:        rgba(20, 16, 12, 0.12);
+  --es-border-strong: rgba(20, 16, 12, 0.28);
+  --es-border-dark:   rgba(239, 230, 206, 0.14);
+  --es-border-dark-strong: rgba(239, 230, 206, 0.28);
+
+  /* ---------- Shadows ---------- */
+  --es-shadow-sm:   0 6px 16px -10px rgba(20, 16, 12, 0.35);
+  --es-shadow-md:   0 18px 38px -22px rgba(20, 16, 12, 0.42);
+  --es-shadow-card: 0 28px 60px -36px rgba(20, 16, 12, 0.40);
+  --es-shadow-lift: 0 42px 90px -44px rgba(20, 16, 12, 0.55);
+  --es-shadow-cta:  0 18px 34px -14px rgba(92, 26, 31, 0.50);
+
+  /* ---------- Radii — reduced, more architectural ---------- */
+  --es-r-sm: 2px;
+  --es-r-md: 4px;
+  --es-r-lg: 8px;
+  --es-r-xl: 12px;
+  --es-r-2xl: 20px;
+  --es-r-pill: 9999px;
+
+  /* ---------- Fonts ---------- */
+  --es-font-body:    'Cormorant Garamond', 'Bookerly', Georgia, serif;
+  --es-font-ui:      'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --es-font-display: 'Cormorant Garamond', 'BookerlyDisplay', Georgia, serif;
+  --es-font-script:  'Cormorant Garamond', Georgia, serif;
+  --es-font-mono:    'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+
+  /* ---------- Backgrounds ---------- */
+  --es-bg-cream:  linear-gradient(180deg, #F4ECD5 0%, #EFE6CE 100%);
+  --es-bg-paper:  linear-gradient(180deg, #F8F1DC 0%, #F4ECD5 100%);
+  --es-bg-dark:   radial-gradient(ellipse at 20% 0%, rgba(92, 26, 31, 0.22), transparent 55%),
+                  radial-gradient(ellipse at 85% 100%, rgba(184, 152, 90, 0.14), transparent 50%),
+                  linear-gradient(180deg, #14100C 0%, #0C0907 100%);
+  --es-bg-wine:   linear-gradient(170deg, #5C1A1F 0%, #3B0F12 100%);
+  --es-bg-charcoal: linear-gradient(180deg, #2A211A 0%, #1A1410 100%);
+}
+
+/* ============================================================
+   Typography — refined, architectural
+   ============================================================ */
+
+.es-display {
+  font-family: var(--es-font-display);
+  font-weight: 300;
+  font-size: clamp(3.25rem, 8.5vw, 8rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  color: var(--es-text);
+}
+
+.es-h1 {
+  font-family: var(--es-font-display);
+  font-weight: 300;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--es-text);
+}
+
+.es-h2 {
+  font-family: var(--es-font-display);
+  font-weight: 300;
+  font-size: clamp(1.85rem, 3.4vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--es-text);
+}
+
+.es-h3 {
+  font-family: var(--es-font-display);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--es-text);
+}
+
+.es-eyebrow {
+  font-family: var(--es-font-mono);
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1.4;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--es-gold);
+}
+
+.es-eyebrow-gold {
+  font-family: var(--es-font-mono);
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--es-gold);
+}
+
+.es-eyebrow-wine {
+  font-family: var(--es-font-mono);
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--es-wine);
+}
+
+.es-lede {
+  font-family: var(--es-font-body);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+  line-height: 1.55;
+  color: var(--es-text-soft);
+  font-style: italic;
+}
+
+.es-body {
+  font-family: var(--es-font-ui);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--es-muted);
+}
+
+.es-body-sm {
+  font-family: var(--es-font-ui);
+  font-weight: 400;
+  font-size: 0.9125rem;
+  line-height: 1.65;
+  color: var(--es-muted);
+}
+
+.es-caption {
+  font-family: var(--es-font-mono);
+  font-weight: 400;
+  font-size: 10.5px;
+  line-height: 1.5;
+  letter-spacing: 0.22em;
+  color: var(--es-muted-light);
+  text-transform: uppercase;
+}
+
+.es-quote {
+  font-family: var(--es-font-script);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  line-height: 1.35;
+  color: var(--es-text);
+}
+
+.es-metric {
+  font-family: var(--es-font-display);
+  font-weight: 300;
+  font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--es-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.es-script {
+  font-family: var(--es-font-script);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--es-font-ui);
+  color: var(--es-text);
+  background: var(--es-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*:focus-visible {
+  outline: 1.5px solid var(--es-gold);
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--es-wine);
+  color: var(--es-cream-soft);
+}
+
+/* ============================================================
+   Buttons — squared, more architectural
+   ============================================================ */
+.es-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 15px 32px;
+  min-height: 50px;
+  border-radius: 0;
+  font-family: var(--es-font-mono);
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+.es-btn:active { transform: scale(0.985); }
+
+.es-btn-primary {
+  background: var(--es-wine);
+  color: var(--es-cream);
+  border-color: var(--es-wine);
+}
+.es-btn-primary:hover {
+  background: var(--es-wine-deep);
+  border-color: var(--es-wine-deep);
+}
+
+.es-btn-ghost {
+  background: transparent;
+  color: var(--es-text);
+  border: 1px solid var(--es-border-strong);
+}
+.es-btn-ghost:hover {
+  background: var(--es-text);
+  color: var(--es-cream);
+  border-color: var(--es-text);
+}
+
+.es-btn-ghost-light {
+  background: transparent;
+  color: var(--es-cream);
+  border: 1px solid var(--es-border-dark-strong);
+}
+.es-btn-ghost-light:hover {
+  background: var(--es-cream);
+  color: var(--es-ink);
+  border-color: var(--es-cream);
+}
+
+.es-btn-gold {
+  background: var(--es-gold);
+  color: var(--es-ink);
+  border-color: var(--es-gold);
+}
+.es-btn-gold:hover {
+  background: var(--es-gold-deep);
+  border-color: var(--es-gold-deep);
+  color: var(--es-cream);
+}
+
+.es-btn-dark {
+  background: var(--es-ink);
+  color: var(--es-cream);
+  border-color: var(--es-ink);
+}
+.es-btn-dark:hover {
+  background: #000;
+}
+
+/* Underline link style for restrained CTAs */
+.es-link {
+  font-family: var(--es-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--es-text);
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.25s ease, letter-spacing 0.25s ease;
+}
+.es-link:hover { color: var(--es-wine); letter-spacing: 0.26em; }
+
+.es-link-light {
+  color: var(--es-cream);
+  border-bottom-color: var(--es-cream);
+}
+.es-link-light:hover { color: var(--es-gold); border-bottom-color: var(--es-gold); }
+
+/* ============================================================
+   Surfaces
+   ============================================================ */
+.es-card {
+  background: var(--es-paper);
+  border: 1px solid var(--es-border);
+  border-radius: var(--es-r-md);
+  box-shadow: var(--es-shadow-sm);
+}
+
+.es-card-hover {
+  transition: transform 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+}
+.es-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--es-shadow-card);
+  border-color: var(--es-border-strong);
+}
+
+/* ============================================================
+   Hairline divider with centered mark
+   ============================================================ */
+.es-ornament {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--es-gold);
+}
+.es-ornament::before,
+.es-ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}

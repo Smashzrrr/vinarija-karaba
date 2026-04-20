@@ -1,0 +1,17 @@
+{
+  "name": "karaba",
+  "version": "1.0.0",
+  "description": "Vinarija Karaba — dark estate wine site",
+  "main": "index.js",
+  "scripts": {
+    "dev": "live-server --port=3001 --entry-file=index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/standalone": "^7.26.0",
+    "live-server": "^1.2.2"
+  }
+}
