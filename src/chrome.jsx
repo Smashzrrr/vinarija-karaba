@@ -128,7 +128,7 @@ function Navbar() {
 
       {menuOpen && (
         <div style={{
-          position: 'fixed', inset: 0, zIndex: 9998,
+          position: 'fixed', inset: 0, zIndex: 10000,
           background: 'rgba(12, 8, 6, 0.97)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
